@@ -45,8 +45,19 @@ RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev subv
     make psol BUILDTYPE=Release CXXFLAGS=" -I/usr/include/apr-1 -I/tmp/src/libpng-1.2.56 \
     -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS=" -I/usr/include/apr-1 \
     -I/tmp/src/libpng-1.2.56 -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" && \
+    mkdir -p /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol && \
+    mkdir -p /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/lib/Release/linux/x64 && \
+    mkdir -p /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/include/out/Release && \
+    cp -r /tmp/src/mod_pagespeed/src/pagespeed/automatic/out/Release/obj /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/out/Release/ && \
+    cp -r /tmp/src/mod_pagespeed/src/pagespeed/automatic/net /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/ && \
+    cp -r /tmp/src/mod_pagespeed/src/pagespeed/automatic/testing /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/ && \
+    cp -r /tmp/src/mod_pagespeed/src/pagespeed/automatic/pagespeed /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/ && \
+    cp -r /tmp/src/mod_pagespeed/src/pagespeed/automatic/third_party /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/ && \
+    cp -r /tmp/src/mod_pagespeed/src/pagespeed/automatic/tools /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/ && \
+    cp -r /tmp/src/mod_pagespeed/src/pagespeed/automatic/pagespeed/automatic/pagespeed_automatic.a /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/lib/Release/linux/x64 && \
     cd /tmp/src/nginx-${NGINX_VERSION} && \
     MOD_PAGESPEED_DIR="/tmp/src/mod_pagespeed/src" ./configure \
+        --with-ipv6 \
         --with-http_ssl_module \
         --with-http_gzip_static_module \
         --with-file-aio \
