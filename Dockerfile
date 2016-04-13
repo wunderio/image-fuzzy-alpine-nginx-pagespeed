@@ -46,8 +46,8 @@ RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev subv
     -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS=" -I/usr/include/apr-1 \
     -I/tmp/src/libpng-1.2.56 -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" && \
     mkdir -p /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol && \
-    mkdir -p /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/lib/Release/linux/x64 && \
-    mkdir -p /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/include/out/Release && \
+    mkdir -p /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/lib/Release/linux/x64 && \
+    mkdir -p /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/out/Release && \
     cp -r /tmp/src/mod_pagespeed/src/out/Release/obj /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/out/Release/ && \
     cp -r /tmp/src/mod_pagespeed/src/net /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/ && \
     cp -r /tmp/src/mod_pagespeed/src/testing /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/ && \
