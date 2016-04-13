@@ -26,20 +26,20 @@ RUN export PATH=$PATH:/tmp/src/depot_tools && \
     cd src/ && \
     git checkout 1.11.33.0 && \
     gclient sync --force --jobs=1 && \
-    wget https://github.com/pagespeed/ngx_pagespeed/files/195988/psol-chromium.stacktrace.patch.txt && \
-    patch third_party/chromium/src/base/debug/stack_trace_posix.cc < psol-chromium.stacktrace.patch.txt && \
+    wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/automatic_makefile.patch && \
+    wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/libpng_cflags.patch && \
+    wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/pthread_nonrecursive_np.patch && \
+    wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/rename_c_symbols.patch && \
+    wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/stack_trace_posix.patch && \
+    patch -p1 -i automatic_makefile.patch && \
+    patch -p1 -i libpng_cflags.patch && \
+    patch -p1 -i pthread_nonrecursive_np.patch && \
+    patch -p1 -i rename_c_symbols.patch && \
+    patch -p1 -i stack_trace_posix.patch && \
     make BUILDTYPE=Release CXXFLAGS=" -I/usr/include/apr-1 -I/tmp/src/libpng-1.2.56 \
     -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS=" -I/usr/include/apr-1 \
     -I/tmp/src/libpng-1.2.56 -fPIC -D_GLIBCXX_USE_CXX11_ABI=0"
 RUN cd /tmp/src/mod_pagespeed/src/pagespeed/automatic && \
-    sed -i '/apr\/libapr.a/d' Makefile && \
-    sed -i '/aprutil\/libaprutil.a/d' Makefile && \
-    sed -i '/libjpeg_turbo/d' Makefile && \
-    sed -i '/libpng\/libpng.a/d' Makefile && \
-    sed -i '/icu\/libi/d' Makefile && \
-    sed -i '/libpng\/libpng.a/d' Makefile && \
-    sed -i '/serf\/libopenssl.a/d' Makefile && \
-    sed -i '/zlib\/libzlib.a/d' Makefile && \
     make all BUILDTYPE=Release CXXFLAGS=" -I/usr/include/apr-1 -I/tmp/src/libpng-1.2.56 \
     -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS=" -I/usr/include/apr-1 \
     -I/tmp/src/libpng-1.2.56 -fPIC -D_GLIBCXX_USE_CXX11_ABI=0"
