@@ -48,13 +48,13 @@ RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev subv
     mkdir -p /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol && \
     mkdir -p /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/lib/Release/linux/x64 && \
     mkdir -p /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/include/out/Release && \
-    cp -r /tmp/src/mod_pagespeed/src/pagespeed/automatic/out/Release/obj /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/out/Release/ && \
-    cp -r /tmp/src/mod_pagespeed/src/pagespeed/automatic/net /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/ && \
-    cp -r /tmp/src/mod_pagespeed/src/pagespeed/automatic/testing /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/ && \
-    cp -r /tmp/src/mod_pagespeed/src/pagespeed/automatic/pagespeed /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/ && \
-    cp -r /tmp/src/mod_pagespeed/src/pagespeed/automatic/third_party /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/ && \
-    cp -r /tmp/src/mod_pagespeed/src/pagespeed/automatic/tools /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/ && \
-    cp -r /tmp/src/mod_pagespeed/src/pagespeed/automatic/pagespeed/automatic/pagespeed_automatic.a /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/lib/Release/linux/x64 && \
+    cp -r /tmp/src/mod_pagespeed/src/out/Release/obj /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/out/Release/ && \
+    cp -r /tmp/src/mod_pagespeed/src/net /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/ && \
+    cp -r /tmp/src/mod_pagespeed/src/testing /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/ && \
+    cp -r /tmp/src/mod_pagespeed/src/pagespeed /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/ && \
+    cp -r /tmp/src/mod_pagespeed/src/third_party /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/ && \
+    cp -r /tmp/src/mod_pagespeed/src/tools /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/ && \
+    cp -r /tmp/src/mod_pagespeed/src/pagespeed/automatic/pagespeed_automatic.a /tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/lib/Release/linux/x64 && \
     cd /tmp/src/nginx-${NGINX_VERSION} && \
     MOD_PAGESPEED_DIR="/tmp/src/mod_pagespeed/src" ./configure \
         --with-ipv6 \
