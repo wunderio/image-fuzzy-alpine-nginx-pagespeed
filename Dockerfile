@@ -3,7 +3,7 @@ FROM alpine:3.3
 ENV NGINX_VERSION 1.9.14
 ENV PAGESPEED_VERSION 1.11.33.0-beta
 
-RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev subversion git patch bash gperf python" && \
+RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev subversion git patch bash gperf python apr-dev apr-util-dev libjpeg-turbo-dev icu-dev" && \
     runtime_pkgs="ca-certificates openssl pcre zlib" && \
     apk --no-cache --update add ${build_pkgs} ${runtime_pkgs} && \
     mkdir -p /tmp/src/mod_pagespeed/src && \
