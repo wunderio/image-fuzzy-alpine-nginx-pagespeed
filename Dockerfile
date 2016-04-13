@@ -11,7 +11,7 @@ RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev subv
     wget https://sourceforge.net/projects/libpng/files/libpng12/1.2.56/libpng-1.2.56.tar.xz/download\?use_mirror\=tenet\&r\=https%3A%2F%2Fsourceforge.net%2Fprojects%2Flibpng%2Ffiles%2Flibpng12%2F1.2.56%2F\&use_mirror\=tenet\# -O libpng-1.2.56.tar.xz && \
     tar -Jxf libpng-1.2.56.tar.xz && \
     wget https://github.com/pagespeed/ngx_pagespeed/archive/v${PAGESPEED_VERSION}-beta.tar.gz && \
-    tar -zxvf v${PAGESPEED_VERSION}.tar.gz && \
+    tar -zxvf v${PAGESPEED_VERSION}-beta.tar.gz && \
     svn co https://src.chromium.org/svn/trunk/tools/depot_tools && \
     wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
     tar -zxvf nginx-${NGINX_VERSION}.tar.gz && \
