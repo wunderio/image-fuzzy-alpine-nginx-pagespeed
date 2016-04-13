@@ -16,16 +16,17 @@ RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev subv
     wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
     tar -zxvf nginx-${NGINX_VERSION}.tar.gz && \
     cd /tmp/src/mod_pagespeed && \
-    git clone https://github.com/pagespeed/mod_pagespeed.git src
-RUN cd /tmp/src/libpng-1.2.56 && \
-    ./configure --prefix=/usr --disable-static && make && make install
-RUN export PATH=$PATH:/tmp/src/depot_tools && \
+    git clone https://github.com/pagespeed/mod_pagespeed.git src && \
+    cd /tmp/src/libpng-1.2.56 && \
+    ./configure --prefix=/usr --disable-static && make && make install && \
+    export PATH=$PATH:/tmp/src/depot_tools && \
     cd /tmp/src/mod_pagespeed && \
     export GYP_DEFINES="use_system_libs=1 _GLIBCXX_USE_CXX11_ABI=0 use_system_icu=1" && \
     gclient config https://github.com/pagespeed/mod_pagespeed.git --unmanaged --name=src && \
     cd src/ && \
     git checkout 1.11.33.0 && \
     gclient sync --force --jobs=1 && \
+    cd /tmp/src/mod_pagespeed && \
     wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/automatic_makefile.patch && \
     wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/libpng_cflags.patch && \
     wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/pthread_nonrecursive_np.patch && \
@@ -36,14 +37,15 @@ RUN export PATH=$PATH:/tmp/src/depot_tools && \
     patch -p1 -i pthread_nonrecursive_np.patch && \
     patch -p1 -i rename_c_symbols.patch && \
     patch -p1 -i stack_trace_posix.patch && \
+    cd src/ && \
     make BUILDTYPE=Release CXXFLAGS=" -I/usr/include/apr-1 -I/tmp/src/libpng-1.2.56 \
     -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS=" -I/usr/include/apr-1 \
-    -I/tmp/src/libpng-1.2.56 -fPIC -D_GLIBCXX_USE_CXX11_ABI=0"
-RUN cd /tmp/src/mod_pagespeed/src/pagespeed/automatic && \
+    -I/tmp/src/libpng-1.2.56 -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" && \
+    cd /tmp/src/mod_pagespeed/src/pagespeed/automatic && \
     make all BUILDTYPE=Release CXXFLAGS=" -I/usr/include/apr-1 -I/tmp/src/libpng-1.2.56 \
     -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS=" -I/usr/include/apr-1 \
-    -I/tmp/src/libpng-1.2.56 -fPIC -D_GLIBCXX_USE_CXX11_ABI=0"
-RUN cd /tmp/src/nginx-${NGINX_VERSION} && \
+    -I/tmp/src/libpng-1.2.56 -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" && \
+    cd /tmp/src/nginx-${NGINX_VERSION} && \
     MOD_PAGESPEED_DIR="/tmp/src/mod_pagespeed/src" ./configure \
         --with-http_ssl_module \
         --with-http_gzip_static_module \
