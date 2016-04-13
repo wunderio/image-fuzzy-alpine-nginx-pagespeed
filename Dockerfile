@@ -93,6 +93,6 @@ VOLUME ["/var/log/nginx"]
 
 WORKDIR /etc/nginx
 
-EXPOSE 80
+EXPOSE 80 443
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
