@@ -1,4 +1,5 @@
 FROM alpine:3.3
+MAINTAINER ilari.makela@wunderkraut.com
 
 ENV NGINX_VERSION 1.9.14
 ENV PAGESPEED_VERSION 1.10.33.7
