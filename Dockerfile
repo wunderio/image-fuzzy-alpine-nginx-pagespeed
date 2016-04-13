@@ -24,7 +24,7 @@ RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev subv
     export GYP_DEFINES="use_system_libs=1 _GLIBCXX_USE_CXX11_ABI=0 use_system_icu=1" && \
     gclient config https://github.com/pagespeed/mod_pagespeed.git --unmanaged --name=src && \
     cd src/ && \
-    git checkout {PAGESPEED_VERSION} && \
+    git checkout ${PAGESPEED_VERSION} && \
     gclient sync --force --jobs=1 && \
     cd /tmp/src/mod_pagespeed && \
     wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/automatic_makefile.patch && \
