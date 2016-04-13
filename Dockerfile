@@ -1,7 +1,7 @@
 FROM alpine:3.3
 
 ENV NGINX_VERSION 1.9.14
-ENV PAGESPEED_VERSION 1.11.33.0-beta
+ENV PAGESPEED_VERSION 1.10.33.7
 
 RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev subversion git patch bash gperf python apr-dev apr-util-dev libjpeg-turbo-dev icu-dev" && \
     runtime_pkgs="ca-certificates openssl pcre zlib" && \
@@ -10,7 +10,7 @@ RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev subv
     cd /tmp/src && \
     wget https://sourceforge.net/projects/libpng/files/libpng12/1.2.56/libpng-1.2.56.tar.xz/download\?use_mirror\=tenet\&r\=https%3A%2F%2Fsourceforge.net%2Fprojects%2Flibpng%2Ffiles%2Flibpng12%2F1.2.56%2F\&use_mirror\=tenet\# -O libpng-1.2.56.tar.xz && \
     tar -Jxf libpng-1.2.56.tar.xz && \
-    wget https://github.com/pagespeed/ngx_pagespeed/archive/v${PAGESPEED_VERSION}.tar.gz && \
+    wget https://github.com/pagespeed/ngx_pagespeed/archive/v${PAGESPEED_VERSION}-beta.tar.gz && \
     tar -zxvf v${PAGESPEED_VERSION}.tar.gz && \
     svn co https://src.chromium.org/svn/trunk/tools/depot_tools && \
     wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
@@ -24,7 +24,7 @@ RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev subv
     export GYP_DEFINES="use_system_libs=1 _GLIBCXX_USE_CXX11_ABI=0 use_system_icu=1" && \
     gclient config https://github.com/pagespeed/mod_pagespeed.git --unmanaged --name=src && \
     cd src/ && \
-    git checkout 1.11.33.0 && \
+    git checkout {PAGESPEED_VERSION} && \
     gclient sync --force --jobs=1 && \
     cd /tmp/src/mod_pagespeed && \
     wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/automatic_makefile.patch && \
@@ -42,7 +42,7 @@ RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev subv
     -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS=" -I/usr/include/apr-1 \
     -I/tmp/src/libpng-1.2.56 -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" && \
     cd /tmp/src/mod_pagespeed/src/pagespeed/automatic && \
-    make all BUILDTYPE=Release CXXFLAGS=" -I/usr/include/apr-1 -I/tmp/src/libpng-1.2.56 \
+    make psol BUILDTYPE=Release CXXFLAGS=" -I/usr/include/apr-1 -I/tmp/src/libpng-1.2.56 \
     -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS=" -I/usr/include/apr-1 \
     -I/tmp/src/libpng-1.2.56 -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" && \
     cd /tmp/src/nginx-${NGINX_VERSION} && \
@@ -71,7 +71,7 @@ RUN build_pkgs="build-base linux-headers openssl-dev pcre-dev wget zlib-dev subv
         --pid-path=/var/run/nginx.pid \
         --lock-path=/var/run/nginx.lock \
         --sbin-path=/usr/local/sbin/nginx \
-        --add-module=/tmp/src/ngx_pagespeed-${NGINX_VERSION}/ && \
+        --add-module=/tmp/src/ngx_pagespeed-${PAGESPEED_VERSION}-beta/ && \
     make && \
     make install && \
     apk del ${build_pkgs} && \
