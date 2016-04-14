@@ -22,6 +22,7 @@ RUN build_pkgs="apr-dev apr-util-dev zlib-dev linux-headers openssl-dev libjpeg-
     tar -zxvf ${SOURCE_DIR}/libpng-${LIBPNG_VERSION}.tar.gz && \
     cd ${SOURCE_DIR}/libpng-${LIBPNG_VERSION} && \
     ./configure --build=$CBUILD --host=$CHOST --prefix=/usr --enable-shared --with-libpng-compat && make && make install && \
+    cd ${SOURCE_DIR} && \
     wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/automatic_makefile.patch && \
     wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/libpng_cflags.patch && \
     wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/pthread_nonrecursive_np.patch && \
