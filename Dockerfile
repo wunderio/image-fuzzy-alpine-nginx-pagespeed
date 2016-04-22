@@ -5,7 +5,7 @@ ENV NGINX_VERSION=1.9.14 \
     PAGESPEED_VERSION=1.10.33.7 \
     SOURCE_DIR=/tmp/src \
     LIBPNG_LIB=libpng12 \
-    LIBPNG_VERSION=1.2.56 \
+    LIBPNG_VERSION=1.2.56
 
 RUN set -x && \
     apk --no-cache --update add \
