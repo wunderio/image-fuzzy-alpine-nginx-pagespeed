@@ -1,27 +1,48 @@
 FROM alpine:3.3
 MAINTAINER ilari.makela@wunderkraut.com
 
-ENV NGINX_VERSION 1.9.14
-ENV PAGESPEED_VERSION 1.10.33.7
-ENV SOURCE_DIR /tmp/src
-ENV LIBPNG_LIB="libpng12"
-ENV LIBPNG_VERSION="1.2.56"
+ENV NGINX_VERSION=1.9.14 \
+    PAGESPEED_VERSION=1.10.33.7 \
+    SOURCE_DIR=/tmp/src \
+    LIBPNG_LIB=libpng12 \
+    LIBPNG_VERSION=1.2.56
 
-RUN build_pkgs="apr-dev apr-util-dev zlib-dev linux-headers openssl-dev libjpeg-turbo-dev icu-dev gperf build-base wget python apache2-dev pcre-dev" && \
-    runtime_pkgs="ca-certificates libuuid apr apr-util libjpeg-turbo icu icu-libs openssl pcre zlib" && \
-    apk --no-cache --update add ${build_pkgs} ${runtime_pkgs} && \
+RUN set -x && \
+    apk --no-cache --update add \
+        ca-certificates \
+        libuuid \
+        apr \
+        apr-util \
+        libjpeg-turbo \
+        icu \
+        icu-libs \
+        openssl \
+        pcre \
+        zlib && \
+    apk --no-cache --update add -t .build-deps \
+        apache2-dev \
+        apr-dev \
+        apr-util-dev \
+        build-base \
+        icu-dev \
+        libjpeg-turbo-dev \
+        linux-headers \
+        gperf \
+        openssl-dev \
+        pcre-dev \
+        python \
+        wget \
+        zlib-dev && \
     mkdir ${SOURCE_DIR} && \
     cd ${SOURCE_DIR} && \
-    wget --no-check-certificate https://dl.google.com/dl/linux/mod-pagespeed/tar/beta/mod-pagespeed-beta-${PAGESPEED_VERSION}-r0.tar.bz2 && \
-    wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
-    wget ftp://ftp.simplesystems.org/pub/libpng/png/src/${LIBPNG_LIB}/libpng-${LIBPNG_VERSION}.tar.gz && \
-    wget --no-check-certificate https://github.com/pagespeed/ngx_pagespeed/archive/v${PAGESPEED_VERSION}-beta.tar.gz && \
-    tar -jxvf ${SOURCE_DIR}/mod-pagespeed-beta-${PAGESPEED_VERSION}-r0.tar.bz2 && \
-    tar -zxvf ${SOURCE_DIR}/nginx-${NGINX_VERSION}.tar.gz && \
-    tar -zxvf ${SOURCE_DIR}/v${PAGESPEED_VERSION}-beta.tar.gz && \
-    tar -zxvf ${SOURCE_DIR}/libpng-${LIBPNG_VERSION}.tar.gz && \
+    wget -O- --no-check-certificate https://dl.google.com/dl/linux/mod-pagespeed/tar/beta/mod-pagespeed-beta-${PAGESPEED_VERSION}-r0.tar.bz2 | tar -jxv && \
+    wget -O- http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz | tar -zxv && \
+    wget -O- ftp://ftp.simplesystems.org/pub/libpng/png/src/${LIBPNG_LIB}/libpng-${LIBPNG_VERSION}.tar.gz | tar -zxv && \
+    wget -O- --no-check-certificate https://github.com/pagespeed/ngx_pagespeed/archive/v${PAGESPEED_VERSION}-beta.tar.gz | tar -zxv && \
     cd ${SOURCE_DIR}/libpng-${LIBPNG_VERSION} && \
-    ./configure --build=$CBUILD --host=$CHOST --prefix=/usr --enable-shared --with-libpng-compat && make && make install && \
+    ./configure --build=$CBUILD --host=$CHOST --prefix=/usr --enable-shared --with-libpng-compat && \
+    make && \
+    make install && \
     cd ${SOURCE_DIR} && \
     wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/automatic_makefile.patch && \
     wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/libpng_cflags.patch && \
@@ -51,37 +72,37 @@ RUN build_pkgs="apr-dev apr-util-dev zlib-dev linux-headers openssl-dev libjpeg-
     cp -r ${SOURCE_DIR}/modpagespeed-${PAGESPEED_VERSION}/src/pagespeed/automatic/pagespeed_automatic.a ${SOURCE_DIR}/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/lib/Release/linux/x64 && \
     cd ${SOURCE_DIR}/nginx-${NGINX_VERSION} && \
     LD_LIBRARY_PATH=${SOURCE_DIR}/modpagespeed-${PAGESPEED_VERSION}/usr/lib ./configure --with-ipv6 \
-    --prefix=/var/lib/nginx \
-    --sbin-path=/usr/sbin \
-    --modules-path=/usr/lib/nginx \
-    --with-http_ssl_module \
-    --with-http_gzip_static_module \
-    --with-file-aio \
-    --with-http_v2_module \
-    --without-http_autoindex_module \
-    --without-http_browser_module \
-    --without-http_geo_module \
-    --without-http_map_module \
-    --without-http_memcached_module \
-    --without-http_userid_module \
-    --without-mail_pop3_module \
-    --without-mail_imap_module \
-    --without-mail_smtp_module \
-    --without-http_split_clients_module \
-    --without-http_uwsgi_module \
-    --without-http_scgi_module \
-    --without-http_referer_module \
-    --without-http_upstream_ip_hash_module \
-    --prefix=/etc/nginx \
-    --http-log-path=/var/log/nginx/access.log \
-    --error-log-path=/var/log/nginx/error.log \
-    --pid-path=/var/run/nginx.pid \
-    --add-module=${SOURCE_DIR}/ngx_pagespeed-${PAGESPEED_VERSION}-beta \
-    --with-cc-opt="-fPIC -I /usr/include/apr-1" \
-    --with-ld-opt="-luuid -lapr-1 -laprutil-1 -licudata -licuuc -L${SOURCE_DIR}/modpagespeed-${PAGESPEED_VERSION}/usr/lib -lpng12 -lturbojpeg -ljpeg" && \
+        --prefix=/var/lib/nginx \
+        --sbin-path=/usr/sbin \
+        --modules-path=/usr/lib/nginx \
+        --with-http_ssl_module \
+        --with-http_gzip_static_module \
+        --with-file-aio \
+        --with-http_v2_module \
+        --without-http_autoindex_module \
+        --without-http_browser_module \
+        --without-http_geo_module \
+        --without-http_map_module \
+        --without-http_memcached_module \
+        --without-http_userid_module \
+        --without-mail_pop3_module \
+        --without-mail_imap_module \
+        --without-mail_smtp_module \
+        --without-http_split_clients_module \
+        --without-http_uwsgi_module \
+        --without-http_scgi_module \
+        --without-http_referer_module \
+        --without-http_upstream_ip_hash_module \
+        --prefix=/etc/nginx \
+        --http-log-path=/var/log/nginx/access.log \
+        --error-log-path=/var/log/nginx/error.log \
+        --pid-path=/var/run/nginx.pid \
+        --add-module=${SOURCE_DIR}/ngx_pagespeed-${PAGESPEED_VERSION}-beta \
+        --with-cc-opt="-fPIC -I /usr/include/apr-1" \
+        --with-ld-opt="-luuid -lapr-1 -laprutil-1 -licudata -licuuc -L${SOURCE_DIR}/modpagespeed-${PAGESPEED_VERSION}/usr/lib -lpng12 -lturbojpeg -ljpeg" && \
     make && \
     make install && \
-    apk del ${build_pkgs} && \
+    apk del .build-deps && \
     rm -rf /tmp/* && \
     rm -rf /var/cache/apk/*
 
