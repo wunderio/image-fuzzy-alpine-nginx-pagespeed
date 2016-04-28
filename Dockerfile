@@ -105,7 +105,9 @@ RUN set -x && \
     make install && \
     apk del .build-deps && \
     rm -rf /tmp/* && \
-    rm -rf /var/cache/apk/*
+    rm -rf /var/cache/apk/* && \
+    ln -sf /dev/stdout /var/log/nginx/access.log && \
+    ln -sf /dev/stderr /var/log/nginx/error.log
 
 # Make our nginx.conf available on the container
 ADD conf/nginx.conf /etc/nginx/nginx.conf
