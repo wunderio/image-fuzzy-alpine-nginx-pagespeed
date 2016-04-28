@@ -1,7 +1,7 @@
 FROM alpine:3.3
 MAINTAINER ilari.makela@wunderkraut.com
 
-ENV NGINX_VERSION=1.9.14 \
+ENV NGINX_VERSION=1.9.15 \
     PAGESPEED_VERSION=1.10.33.7 \
     SOURCE_DIR=/tmp/src \
     LIBPNG_LIB=libpng12 \
@@ -35,20 +35,20 @@ RUN set -x && \
         zlib-dev && \
     mkdir ${SOURCE_DIR} && \
     cd ${SOURCE_DIR} && \
-    wget -O- --no-check-certificate https://dl.google.com/dl/linux/mod-pagespeed/tar/beta/mod-pagespeed-beta-${PAGESPEED_VERSION}-r0.tar.bz2 | tar -jxv && \
+    wget -O- https://dl.google.com/dl/linux/mod-pagespeed/tar/beta/mod-pagespeed-beta-${PAGESPEED_VERSION}-r0.tar.bz2 | tar -jxv && \
     wget -O- http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz | tar -zxv && \
     wget -O- ftp://ftp.simplesystems.org/pub/libpng/png/src/${LIBPNG_LIB}/libpng-${LIBPNG_VERSION}.tar.gz | tar -zxv && \
-    wget -O- --no-check-certificate https://github.com/pagespeed/ngx_pagespeed/archive/v${PAGESPEED_VERSION}-beta.tar.gz | tar -zxv && \
+    wget -O- https://github.com/pagespeed/ngx_pagespeed/archive/v${PAGESPEED_VERSION}-beta.tar.gz | tar -zxv && \
     cd ${SOURCE_DIR}/libpng-${LIBPNG_VERSION} && \
     ./configure --build=$CBUILD --host=$CHOST --prefix=/usr --enable-shared --with-libpng-compat && \
     make && \
     make install && \
     cd ${SOURCE_DIR} && \
-    wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/automatic_makefile.patch && \
-    wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/libpng_cflags.patch && \
-    wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/pthread_nonrecursive_np.patch && \
-    wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/rename_c_symbols.patch && \
-    wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/stack_trace_posix.patch && \
+    wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/patches/automatic_makefile.patch && \
+    wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/patches/libpng_cflags.patch && \
+    wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/patches/pthread_nonrecursive_np.patch && \
+    wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/patches/rename_c_symbols.patch && \
+    wget https://raw.githubusercontent.com/iler/alpine-nginx-pagespeed/master/patches/stack_trace_posix.patch && \
     cd ${SOURCE_DIR}/modpagespeed-${PAGESPEED_VERSION} && \
     patch -p1 -i ${SOURCE_DIR}/automatic_makefile.patch && \
     patch -p1 -i ${SOURCE_DIR}/libpng_cflags.patch && \
@@ -94,6 +94,7 @@ RUN set -x && \
         --without-http_referer_module \
         --without-http_upstream_ip_hash_module \
         --prefix=/etc/nginx \
+        --conf-path=/etc/nginx/nginx.conf \
         --http-log-path=/var/log/nginx/access.log \
         --error-log-path=/var/log/nginx/error.log \
         --pid-path=/var/run/nginx.pid \
@@ -105,6 +106,9 @@ RUN set -x && \
     apk del .build-deps && \
     rm -rf /tmp/* && \
     rm -rf /var/cache/apk/*
+
+# Make our nginx.conf available on the container
+ADD conf/nginx.conf /etc/nginx/nginx.conf
 
 VOLUME ["/var/log/nginx"]
 
