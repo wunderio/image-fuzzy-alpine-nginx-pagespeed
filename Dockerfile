@@ -1,4 +1,4 @@
-FROM alpine:3.3
+FROM quay.io/wunder/wunder-alpine-base
 MAINTAINER ilari.makela@wunderkraut.com
 
 ENV NGINX_VERSION=1.9.15 \
@@ -111,6 +111,8 @@ RUN set -x && \
 
 # Make our nginx.conf available on the container
 ADD conf/nginx.conf /etc/nginx/nginx.conf
+
+USER app
 
 VOLUME ["/var/log/nginx"]
 
