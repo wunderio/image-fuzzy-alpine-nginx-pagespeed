@@ -80,7 +80,6 @@ RUN set -x && \
         --with-file-aio \
         --with-http_v2_module \
         --with-http_realip_module \
-        --with-http_map_module \
         --without-http_autoindex_module \
         --without-http_browser_module \
         --without-http_geo_module \
