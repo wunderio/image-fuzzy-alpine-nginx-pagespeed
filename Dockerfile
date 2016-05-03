@@ -113,7 +113,6 @@ RUN set -x && \
 ADD conf/nginx.conf /etc/nginx/nginx.conf
 
 VOLUME ["/var/log/nginx"]
-VOLUME ["/tmp"]
 
 # Little impact in this image
 WORKDIR /app
