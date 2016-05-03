@@ -112,11 +112,10 @@ RUN set -x && \
 # Make our nginx.conf available on the container
 ADD conf/nginx.conf /etc/nginx/nginx.conf
 
-USER app
-
 VOLUME ["/var/log/nginx"]
 
-WORKDIR /etc/nginx
+# Little impact in this image
+WORKDIR /app
 
 EXPOSE 80 443
 
