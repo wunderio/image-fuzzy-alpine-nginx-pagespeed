@@ -1,3 +1,5 @@
+[![Docker Repository on Quay](https://quay.io/repository/wunder/alpine-nginx-pagespeed/status "Docker Repository on Quay")](https://quay.io/repository/wunder/alpine-nginx-pagespeed)
+
 # alpine-nginx-pagespeed
 
 Nginx compiled with PageSpeed optimisation library on Alpine Linux. Is meant to be extended to application specific images by adding custom configuration.
