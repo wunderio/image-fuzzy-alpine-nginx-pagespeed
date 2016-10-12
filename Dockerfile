@@ -71,7 +71,6 @@ RUN set -x && \
     curl -L http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz | tar -zx && \
     cd /tmp/nginx-${NGINX_VERSION} && \
     LD_LIBRARY_PATH=/tmp/modpagespeed-${PAGESPEED_VERSION}/usr/lib ./configure --with-ipv6 \
-        --prefix=/var/lib/nginx \
         --sbin-path=/usr/sbin \
         --modules-path=/usr/lib/nginx \
         --with-http_ssl_module \
