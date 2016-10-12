@@ -1,5 +1,5 @@
---- a/third_party/libpng/libpng.gyp
-+++ b/third_party/libpng/libpng.gyp
+--- a/src/third_party/libpng/libpng.gyp
++++ b/src/third_party/libpng/libpng.gyp
 @@ -111,9 +111,6 @@
                '<!(<(pkg-config) --atleast-version=1.4.0 libpng; echo $?)'
            },

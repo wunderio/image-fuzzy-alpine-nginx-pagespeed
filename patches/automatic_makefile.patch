@@ -1,5 +1,5 @@
---- a/pagespeed/automatic/Makefile
-+++ b/pagespeed/automatic/Makefile
+--- a/src/pagespeed/automatic/Makefile
++++ b/src/pagespeed/automatic/Makefile
 @@ -157,8 +157,6 @@
    pagespeed/libpagespeed_thread.a \
    pagespeed/libpthread_system.a \
@@ -26,5 +26,5 @@
    third_party/serf/libserf.a \
 -  third_party/zlib/libzlib.a \
    url/liburl_lib.a
-
+ 
  # The 'gclient' build flow uses 'xcodebuild' on Mac and 'make' on Linux.
