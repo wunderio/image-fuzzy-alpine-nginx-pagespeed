@@ -4,6 +4,15 @@ MAINTAINER aleksi.johansson@wunder.io
 # Based on https://github.com/pagespeed/ngx_pagespeed/issues/1181#issuecomment-250776751
 # Secret Google tarball releases of mod_pagespeed from here https://github.com/pagespeed/mod_pagespeed/issues/968
 
+# Set versions as environment variables so that they can be inspected later
+ENV LIBPNG_VERSION=1.2.56 \
+    # mod_pagespeed requires an old version of http://www.libpng.org/pub/png/libpng.html
+    PAGESPEED_VERSION=1.11.33.4 \
+    # Check https://github.com/pagespeed/ngx_pagespeed/releases for the latest version
+    NGINX_VERSION=1.11.5
+    # Check http://nginx.org/en/download.html for the latest version
+
+# Add dependencies
 RUN apk --no-cache add \
         ca-certificates \
         libuuid \
@@ -15,6 +24,9 @@ RUN apk --no-cache add \
         openssl \
         pcre \
         zlib
+
+# Add build dependencies
+# and build mod_pagespeed from source for Alpine for Nginx with ngx_pagespeed
 RUN set -x && \
     apk --no-cache add -t .build-deps \
         apache2-dev \
@@ -30,17 +42,13 @@ RUN set -x && \
         pcre-dev \
         python \
         zlib-dev && \
-    # Build libpng:
-    # This sadly requires an old version of http://www.libpng.org/pub/png/libpng.html
-    LIBPNG_VERSION=1.2.56 && \
+    # Build libpng
     cd /tmp && \
     curl -L http://prdownloads.sourceforge.net/libpng/libpng-${LIBPNG_VERSION}.tar.gz | tar -zx && \
     cd /tmp/libpng-${LIBPNG_VERSION} && \
     ./configure --build=$CBUILD --host=$CHOST --prefix=/usr --enable-shared --with-libpng-compat && \
     make install V=0 && \
-    # Build PageSpeed:
-    # Check https://github.com/pagespeed/ngx_pagespeed/releases for the latest version
-    PAGESPEED_VERSION=1.11.33.4 && \
+    # Build PageSpeed
     cd /tmp && \
     curl -L https://dl.google.com/dl/linux/mod-pagespeed/tar/beta/mod-pagespeed-beta-${PAGESPEED_VERSION}-r0.tar.bz2 | tar -jx && \
     curl -L https://github.com/pagespeed/ngx_pagespeed/archive/v${PAGESPEED_VERSION}-beta.tar.gz | tar -zx && \
@@ -66,9 +74,7 @@ RUN set -x && \
     cp -r /tmp/modpagespeed-${PAGESPEED_VERSION}/src/tools /tmp/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/ && \
     cp -r /tmp/modpagespeed-${PAGESPEED_VERSION}/src/url /tmp/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/include/ && \
     cp -r /tmp/modpagespeed-${PAGESPEED_VERSION}/src/pagespeed/automatic/pagespeed_automatic.a /tmp/ngx_pagespeed-${PAGESPEED_VERSION}-beta/psol/lib/Release/linux/x64 && \
-    # Build Nginx with support for PageSpeed:
-    # Check http://nginx.org/en/download.html for the latest version.
-    NGINX_VERSION=1.11.5 && \
+    # Build Nginx with support for PageSpeed
     cd /tmp && \
     curl -L http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz | tar -zx && \
     cd /tmp/nginx-${NGINX_VERSION} && \
@@ -101,14 +107,14 @@ RUN set -x && \
         --with-cc-opt="-fPIC -I /usr/include/apr-1" \
         --with-ld-opt="-luuid -lapr-1 -laprutil-1 -licudata -licuuc -L/tmp/modpagespeed-${PAGESPEED_VERSION}/usr/lib -lpng12 -lturbojpeg -ljpeg" && \
     make install --silent && \
-    # Clean-up:
+    # Clean-up
     cd && \
     apk del .build-deps && \
     rm -rf /tmp/* && \
-    # forward request and error logs to docker log collector
+    # Forward request and error logs to docker log collector
     ln -sf /dev/stdout /var/log/nginx/access.log && \
     ln -sf /dev/stderr /var/log/nginx/error.log && \
-    # Make PageSpeed cache writabl:
+    # Make PageSpeed cache writable
     mkdir -p /var/cache/ngx_pagespeed && \
     chmod -R o+wr /var/cache/ngx_pagespeed
 
