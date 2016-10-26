@@ -85,6 +85,7 @@ RUN set -x && \
         --with-http_gzip_static_module \
         --with-file-aio \
         --with-http_v2_module \
+        --with-http_stub_status_module \
         --without-http_autoindex_module \
         --without-http_browser_module \
         --without-http_geo_module \
