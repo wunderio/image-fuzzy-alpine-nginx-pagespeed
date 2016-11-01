@@ -1,6 +1,6 @@
 # alpine-nginx-pagespeed
 
-Nginx compiled with PageSpeed optimisation library on Alpine Linux. Is meant to be extended to application specific images by adding custom configuration.
+Nginx compiled with PageSpeed optimisation library on Alpine Linux.
 
 Maintained by: Aleksi Johansson <aleksi.johansson@wunder.io>
 
