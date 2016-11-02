@@ -1,4 +1,6 @@
-# alpine-nginx-pagespeed
+# image-fuzzy-alpine-nginx-pagespeed
+
+Fuzzy as in reference to the https://en.wikipedia.org/wiki/The_Mythical_Man-Month book where Fred describes the approach of "write one to throw away" as the best start.
 
 Nginx compiled with PageSpeed optimisation library on Alpine Linux.
 
@@ -10,11 +12,11 @@ Maintained by: Aleksi Johansson <aleksi.johansson@wunder.io>
 
 This image is available publicly at:
 
-- quay.io/wunder/alpine-nginx-pagespeed : [![Docker Repository on Quay](https://quay.io/repository/wunder/alpine-nginx-pagespeed/status "Docker Repository on Quay")](https://quay.io/repository/wunder/alpine-nginx-pagespeed)
+- quay.io/wunder/fuzzy-alpine-nginx-pagespeed : [![Docker Repository on Quay](https://quay.io/repository/wunder/fuzzy-alpine-nginx-pagespeed/status "Docker Repository on Quay")](https://quay.io/repository/wunder/fuzzy-alpine-nginx-pagespeed)
 
 ### Base
 
-This image is based on the alpine-base image https://github.com/wunderkraut/alpine-base.
+This image is based on the fuzzy-alpine-base image https://github.com/wunderkraut/image-fuzzy-alpine-base.
 
 ### Modifications
 
@@ -34,7 +36,7 @@ This image is meant to be extended to application specific images by adding cust
 
 Versioning is based on Nginx releases. Please see the release notes for detailed information about the versions. After pulling the version of the image you want you can also inspect the version values by running:
 ```
-docker inspect quay.io/wunder/alpine-nginx-pagespeed
+docker inspect quay.io/wunder/fuzzy-alpine-nginx-pagespeed
 ...
 "Env": [
   "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
@@ -48,7 +50,7 @@ docker inspect quay.io/wunder/alpine-nginx-pagespeed
 Run this container as an independent service:
 
 ```
-$/> docker run -d quay.io/wunder/alpine-nginx-pagespeed
+$/> docker run -d quay.io/wunder/fuzzy-alpine-nginx-pagespeed
 ```
 
 map any needed services such as php-fpm and mount any source code volumes to whatever path needed:
@@ -57,7 +59,7 @@ map any needed services such as php-fpm and mount any source code volumes to wha
 $/> docker run -d \
       -v "$(pwd):/app/web" \
       -l "my_running_fpm_container:fpm.app" \
-      quay.io/wunder/alpine-nginx-pagespeed
+      quay.io/wunder/fuzzy-alpine-nginx-pagespeed
 ```
 
 ## TODO
@@ -66,5 +68,3 @@ $/> docker run -d \
   - diff -rq psol psol_from_container >> differences.txt
   - cat differences.txt | grep "Only in psol/"
 - Inform the Google team we are using the tarballs to build for Alpine and they save a great deal of time
-- Clean up all the HipChat notifications in quay.io and github
-- Remove master tag from quay.io somehow
