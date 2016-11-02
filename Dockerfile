@@ -1,4 +1,4 @@
-FROM quay.io/wunder/wunder-alpine-base:v3.4-0
+FROM quay.io/wunder/image-fuzzy-alpine-base:v3.4
 MAINTAINER aleksi.johansson@wunder.io
 
 # Based on https://github.com/pagespeed/ngx_pagespeed/issues/1181#issuecomment-250776751
