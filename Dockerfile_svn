@@ -1,3 +1,7 @@
+# wunder/fuzzy-alpine-nginx-pagespeed
+#
+# VERSION v1.11.5-3
+#
 FROM quay.io/wunder/fuzzy-alpine-base:v3.4
 MAINTAINER aleksi.johansson@wunder.io
 

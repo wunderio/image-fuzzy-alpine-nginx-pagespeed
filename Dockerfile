@@ -1,3 +1,7 @@
+# wunder/fuzzy-alpine-nginx-pagespeed
+#
+# VERSION v1.11.5-3
+#
 FROM quay.io/wunder/fuzzy-alpine-base:v3.4
 MAINTAINER aleksi.johansson@wunder.io
 
@@ -109,6 +113,9 @@ RUN set -x && \
         --with-cc-opt="-fPIC -I /usr/include/apr-1" \
         --with-ld-opt="-luuid -lapr-1 -laprutil-1 -licudata -licuuc -L/tmp/modpagespeed-${PAGESPEED_VERSION}/usr/lib -lpng12 -lturbojpeg -ljpeg" && \
     make install --silent && \
+    # Make sure /etc/nginx/conf.d folder is available for images extending
+    # this one.
+    mkdir -p /etc/nginx/conf.d && \
     # Clean-up.
     cd && \
     apk del .build-deps && \
