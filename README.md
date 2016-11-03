@@ -26,9 +26,9 @@ This image adds the following files:
 
 This is a custom nginx configuration:
 
-1. runs as app:app;
+1. runs as app;
 2. include additional configs from `/etc/nginx/conf.d/*.conf`;
-3. limit worker connections to 1024.
+3. limit worker connections to 4096.
 
 ## Using this Image
 
