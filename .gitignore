@@ -1,0 +1,2 @@
+# Ignore the diff folder contents that are only used in local testing.
+diff/*

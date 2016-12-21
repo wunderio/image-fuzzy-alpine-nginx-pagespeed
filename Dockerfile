@@ -11,7 +11,7 @@ MAINTAINER aleksi.johansson@wunder.io
 # Set versions as environment variables so that they can be inspected later.
 ENV LIBPNG_VERSION=1.2.56 \
     # mod_pagespeed requires an old version of http://www.libpng.org/pub/png/libpng.html.
-    PAGESPEED_VERSION=1.11.33.4 \
+    PAGESPEED_VERSION=1.12.34.1\
     # Check https://github.com/pagespeed/ngx_pagespeed/releases for the latest version.
     NGINX_VERSION=1.11.5
     # Check http://nginx.org/en/download.html for the latest version.
