@@ -1,6 +1,6 @@
 # wunder/fuzzy-alpine-nginx-pagespeed
 #
-# VERSION v1.11.5-3
+# VERSION v1.11.5-4
 #
 FROM quay.io/wunder/fuzzy-alpine-base:v3.4
 MAINTAINER aleksi.johansson@wunder.io
@@ -57,11 +57,11 @@ RUN set -x && \
     curl -L https://dl.google.com/dl/linux/mod-pagespeed/tar/beta/mod-pagespeed-beta-${PAGESPEED_VERSION}-r0.tar.bz2 | tar -jx && \
     curl -L https://github.com/pagespeed/ngx_pagespeed/archive/v${PAGESPEED_VERSION}-beta.tar.gz | tar -zx && \
     cd /tmp/modpagespeed-${PAGESPEED_VERSION} && \
-    curl -L https://raw.githubusercontent.com/wunderkraut/alpine-nginx-pagespeed/master/patches/automatic_makefile.patch | patch -p1 && \
-    curl -L https://raw.githubusercontent.com/wunderkraut/alpine-nginx-pagespeed/master/patches/libpng_cflags.patch | patch -p1 && \
-    curl -L https://raw.githubusercontent.com/wunderkraut/alpine-nginx-pagespeed/master/patches/pthread_nonrecursive_np.patch | patch -p1 && \
-    curl -L https://raw.githubusercontent.com/wunderkraut/alpine-nginx-pagespeed/master/patches/rename_c_symbols.patch | patch -p1 && \
-    curl -L https://raw.githubusercontent.com/wunderkraut/alpine-nginx-pagespeed/master/patches/stack_trace_posix.patch | patch -p1 && \
+    curl -L https://raw.githubusercontent.com/wunderkraut/image-fuzzy-alpine-nginx-pagespeed/issues/18/patches/automatic_makefile.patch | patch -p1 && \
+    curl -L https://raw.githubusercontent.com/wunderkraut/image-fuzzy-alpine-nginx-pagespeed/issues/18/patches/libpng_cflags.patch | patch -p1 && \
+    curl -L https://raw.githubusercontent.com/wunderkraut/image-fuzzy-alpine-nginx-pagespeed/issues/18/patches/pthread_nonrecursive_np.patch | patch -p1 && \
+    curl -L https://raw.githubusercontent.com/wunderkraut/image-fuzzy-alpine-nginx-pagespeed/issues/18/patches/rename_c_symbols.patch | patch -p1 && \
+    curl -L https://raw.githubusercontent.com/wunderkraut/image-fuzzy-alpine-nginx-pagespeed/issues/18/patches/stack_trace_posix.patch | patch -p1 && \
     ./generate.sh -D use_system_libs=1 -D _GLIBCXX_USE_CXX11_ABI=0 -D use_system_icu=1 && \
     cd /tmp/modpagespeed-${PAGESPEED_VERSION}/src && \
     make BUILDTYPE=Release CXXFLAGS=" -I/usr/include/apr-1 -I/tmp/libpng-${LIBPNG_VERSION} -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" CFLAGS=" -I/usr/include/apr-1 -I/tmp/libpng-${LIBPNG_VERSION} -fPIC -D_GLIBCXX_USE_CXX11_ABI=0" && \
