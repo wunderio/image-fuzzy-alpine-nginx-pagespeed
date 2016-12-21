@@ -1,6 +1,6 @@
 # wunder/fuzzy-alpine-nginx-pagespeed
 #
-# VERSION v1.11.5-3
+# VERSION v1.11.7-1
 #
 FROM quay.io/wunder/fuzzy-alpine-base:v3.4
 MAINTAINER aleksi.johansson@wunder.io
@@ -13,7 +13,7 @@ ENV LIBPNG_VERSION=1.2.56 \
     # mod_pagespeed requires an old version of http://www.libpng.org/pub/png/libpng.html.
     PAGESPEED_VERSION=1.11.33.4 \
     # Check https://github.com/pagespeed/ngx_pagespeed/releases for the latest version.
-    NGINX_VERSION=1.11.5
+    NGINX_VERSION=1.11.7
     # Check http://nginx.org/en/download.html for the latest version.
 
 # Add dependencies.
